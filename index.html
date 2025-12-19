@@ -14,20 +14,78 @@
             <div class="logo">
                 <i class="fas fa-graduation-cap"></i>
                 <h1>Sistem Manajemen <span class="highlight">Data Mahasiswa</span></h1>
+                <div class="system-status">
+                    <span class="status-indicator active"></span>
+                    <small>System Ready</small>
+                </div>
             </div>
             <div class="header-controls">
                 <div class="file-operations">
-                    <button id="importBtn" class="btn btn-secondary">
-                        <i class="fas fa-file-import"></i> Import Data
-                    </button>
-                    <button id="exportBtn" class="btn btn-secondary">
-                        <i class="fas fa-file-export"></i> Export Data
-                    </button>
-                    <input type="file" id="fileInput" accept=".json,.txt" style="display: none;">
+                    <!-- DROPDOWN IMPORT -->
+                    <div class="dropdown">
+                        <button class="btn btn-secondary" id="importBtn">
+                            <i class="fas fa-file-import"></i> Import Data
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item" data-format="json">
+                                <i class="fas fa-file-code"></i> JSON (.json)
+                            </a>
+                            <a href="#" class="dropdown-item" data-format="csv">
+                                <i class="fas fa-file-csv"></i> CSV (.csv)
+                            </a>
+                            <a href="#" class="dropdown-item" data-format="txt">
+                                <i class="fas fa-file-alt"></i> TXT (.txt)
+                            </a>
+                            <a href="#" class="dropdown-item" data-format="xml">
+                                <i class="fas fa-file-code"></i> XML (.xml)
+                            </a>
+                            <a href="#" class="dropdown-item" data-format="excel">
+                                <i class="fas fa-file-excel"></i> Excel (.xlsx)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- DROPDOWN EXPORT -->
+                    <div class="dropdown">
+                        <button class="btn btn-secondary" id="exportBtn">
+                            <i class="fas fa-file-export"></i> Export Data
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item" data-format="json">
+                                <i class="fas fa-file-code"></i> JSON (.json)
+                            </a>
+                            <a href="#" class="dropdown-item" data-format="csv">
+                                <i class="fas fa-file-csv"></i> CSV (.csv)
+                            </a>
+                            <a href="#" class="dropdown-item" data-format="txt">
+                                <i class="fas fa-file-alt"></i> TXT (.txt)
+                            </a>
+                            <a href="#" class="dropdown-item" data-format="xml">
+                                <i class="fas fa-file-code"></i> XML (.xml)
+                            </a>
+                            <a href="#" class="dropdown-item" data-format="excel">
+                                <i class="fas fa-file-excel"></i> Excel (.xlsx)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- HIDDEN FILE INPUT -->
+                    <input type="file" id="fileInput" accept=".json,.csv,.txt,.xml,.xlsx,.xls" style="display: none;">
                 </div>
-                <button id="themeToggle" class="btn btn-icon">
-                    <i class="fas fa-moon"></i>
-                </button>
+                
+                <!-- TEMA DAN INFO -->
+                <div class="header-info">
+                    <div class="data-counter">
+                        <i class="fas fa-database"></i>
+                        <span id="dataCounter">0 data</span>
+                    </div>
+                    <button id="themeToggle" class="btn btn-icon" title="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="helpBtn" class="btn btn-icon" title="Bantuan">
+                        <i class="fas fa-question-circle"></i>
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -35,31 +93,51 @@
         <section class="dashboard">
             <div class="stats-card">
                 <div class="stat">
-                    <i class="fas fa-users"></i>
-                    <div>
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
                         <h3 id="totalStudents">0</h3>
                         <p>Total Mahasiswa</p>
                     </div>
                 </div>
                 <div class="stat">
-                    <i class="fas fa-university"></i>
-                    <div>
+                    <div class="stat-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="stat-content">
                         <h3 id="totalProdi">0</h3>
                         <p>Program Studi</p>
                     </div>
                 </div>
                 <div class="stat">
-                    <i class="fas fa-calendar-alt"></i>
-                    <div>
-                        <h3 id="avgYear">2024</h3>
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="avgYear">-</h3>
                         <p>Tahun Masuk Rata-rata</p>
                     </div>
                 </div>
                 <div class="stat">
-                    <i class="fas fa-database"></i>
-                    <div>
+                    <div class="stat-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="stat-content">
                         <h3 id="dataStatus">Online</h3>
                         <p>Status Database</p>
+                    </div>
+                </div>
+                <!-- LAST UPDATE YANG BERFUNGSI -->
+                <div class="stat stat-highlight">
+                    <div class="stat-icon">
+                        <i class="fas fa-sync-alt"></i>
+                        <div class="pulse-animation"></div>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="lastUpdate">Baru Saja</h3>
+                        <p>Last Update</p>
+                        <small id="lastUpdateDetail">Memuat...</small>
                     </div>
                 </div>
             </div>
@@ -69,7 +147,12 @@
         <main class="main-content">
             <!-- Form Section -->
             <section class="form-section card">
-                <h2><i class="fas fa-edit"></i> Form Data Mahasiswa</h2>
+                <div class="section-header">
+                    <h2><i class="fas fa-edit"></i> Form Data Mahasiswa</h2>
+                    <div class="form-status">
+                        <span class="status-badge" id="formStatus">Mode: Tambah Data</span>
+                    </div>
+                </div>
                 <form id="mahasiswaForm">
                     <div class="form-row">
                         <div class="form-group">
@@ -94,7 +177,12 @@
                         </div>
                         <div class="form-group">
                             <label for="tanggalLahir"><i class="fas fa-birthday-cake"></i> Tanggal Lahir *</label>
-                            <input type="text" id="tanggalLahir" placeholder="DD/MM/YYYY" required>
+                            <div class="date-input-group">
+                                <input type="date" id="tanggalLahir" required>
+                                <button type="button" id="todayBtn" class="btn btn-sm btn-outline">
+                                    <i class="fas fa-calendar-day"></i> Hari Ini
+                                </button>
+                            </div>
                             <small class="hint">Format: DD/MM/YYYY</small>
                             <div class="error-message" id="tanggalLahirError"></div>
                         </div>
@@ -103,19 +191,24 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="prodi"><i class="fas fa-book"></i> Program Studi *</label>
-                            <select id="prodi" required>
-                                <option value="">Pilih Program Studi</option>
-                                <option value="Informatika">Informatika</option>
-                                <option value="Sistem Informasi">Sistem Informasi</option>
-                                <option value="Teknik Komputer">Teknik Komputer</option>
-                                <option value="Teknik Elektro">Teknik Elektro</option>
-                                <option value="Manajemen">Manajemen</option>
-                                <option value="Akuntansi">Akuntansi</option>
-                            </select>
+                            <div class="select-wrapper">
+                                <select id="prodi" required>
+                                    <option value="">Pilih Program Studi</option>
+                                    <option value="Informatika">Informatika</option>
+                                    <option value="Sistem Informasi">Sistem Informasi</option>
+                                    <option value="Teknik Komputer">Teknik Komputer</option>
+                                    <option value="Teknik Elektro">Teknik Elektro</option>
+                                    <option value="Manajemen">Manajemen</option>
+                                    <option value="Akuntansi">Akuntansi</option>
+                                    <option value="Kedokteran">Kedokteran</option>
+                                    <option value="Hukum">Hukum</option>
+                                </select>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="tahunMasuk"><i class="fas fa-calendar"></i> Tahun Masuk *</label>
-                            <input type="text" id="tahunMasuk" placeholder="YYYY" required>
+                            <input type="number" id="tahunMasuk" min="2000" max="2099" value="2024" required>
                             <small class="hint">Format: 4 digit (2000-2099)</small>
                             <div class="error-message" id="tahunMasukError"></div>
                         </div>
@@ -128,7 +221,7 @@
 
                     <div class="form-actions">
                         <button type="button" id="resetBtn" class="btn btn-outline">
-                            <i class="fas fa-redo"></i> Reset
+                            <i class="fas fa-redo"></i> Reset Form
                         </button>
                         <button type="submit" id="saveBtn" class="btn btn-primary">
                             <i class="fas fa-save"></i> Simpan Data
@@ -137,7 +230,7 @@
                             <i class="fas fa-edit"></i> Update Data
                         </button>
                         <button type="button" id="cancelBtn" class="btn btn-danger" style="display: none;">
-                            <i class="fas fa-times"></i> Batal
+                            <i class="fas fa-times"></i> Batal Edit
                         </button>
                     </div>
                 </form>
@@ -146,46 +239,54 @@
             <!-- Data Table & Controls -->
             <section class="data-section card">
                 <div class="section-header">
-                    <h2><i class="fas fa-list"></i> Daftar Mahasiswa</h2>
+                    <h2><i class="fas fa-list"></i> Daftar Mahasiswa <span class="real-time-indicator">REAL-TIME</span></h2>
                     <div class="controls">
                         <div class="search-box">
                             <i class="fas fa-search"></i>
                             <input type="text" id="searchInput" placeholder="Cari mahasiswa...">
-                            <select id="searchType">
+                            <select id="searchType" class="form-control-sm">
                                 <option value="all">Semua Kolom</option>
                                 <option value="nim">NIM</option>
                                 <option value="nama">Nama</option>
                                 <option value="prodi">Program Studi</option>
                                 <option value="email">Email</option>
                             </select>
-                            <select id="searchAlgorithm">
+                            <select id="searchAlgorithm" class="form-control-sm">
                                 <option value="linear">Linear Search</option>
-                                <option value="binary">Binary Search (urutkan dulu)</option>
+                                <option value="binary">Binary Search</option>
                                 <option value="sequential">Sequential Search</option>
                             </select>
                         </div>
 
                         <div class="sort-controls">
-                            <select id="sortField">
-                                <option value="nim">Urutkan berdasarkan</option>
-                                <option value="nim">NIM</option>
-                                <option value="nama">Nama</option>
-                                <option value="prodi">Program Studi</option>
-                                <option value="tahunMasuk">Tahun Masuk</option>
-                            </select>
-                            <select id="sortAlgorithm">
-                                <option value="bubble">Bubble Sort</option>
-                                <option value="insertion">Insertion Sort</option>
-                                <option value="selection">Selection Sort</option>
-                                <option value="merge">Merge Sort</option>
-                                <option value="shell">Shell Sort</option>
-                            </select>
-                            <button id="sortAscBtn" class="btn btn-icon">
-                                <i class="fas fa-sort-amount-up"></i>
-                            </button>
-                            <button id="sortDescBtn" class="btn btn-icon">
-                                <i class="fas fa-sort-amount-down"></i>
-                            </button>
+                            <div class="sort-group">
+                                <select id="sortField" class="form-control-sm">
+                                    <option value="nim">Urutkan berdasarkan</option>
+                                    <option value="nim">NIM</option>
+                                    <option value="nama">Nama</option>
+                                    <option value="prodi">Program Studi</option>
+                                    <option value="tahunMasuk">Tahun Masuk</option>
+                                    <option value="usia">Usia</option>
+                                </select>
+                                <select id="sortAlgorithm" class="form-control-sm">
+                                    <option value="bubble">Bubble Sort</option>
+                                    <option value="insertion">Insertion Sort</option>
+                                    <option value="selection">Selection Sort</option>
+                                    <option value="merge">Merge Sort</option>
+                                    <option value="shell">Shell Sort</option>
+                                </select>
+                            </div>
+                            <div class="sort-buttons">
+                                <button id="sortAscBtn" class="btn btn-icon" title="Urutkan Naik">
+                                    <i class="fas fa-sort-amount-up"></i>
+                                </button>
+                                <button id="sortDescBtn" class="btn btn-icon" title="Urutkan Turun">
+                                    <i class="fas fa-sort-amount-down"></i>
+                                </button>
+                                <button id="visualizeBtn" class="btn btn-icon" title="Visualisasi Sorting">
+                                    <i class="fas fa-play-circle"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -200,9 +301,9 @@
                                 <th>Nama</th>
                                 <th>Email</th>
                                 <th>Prodi</th>
-                                <th>Tahun Lahir</th>
+                                <th>Usia</th>
                                 <th>Tahun Masuk</th>
-                                <th>Aksi</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody">
@@ -217,12 +318,18 @@
                         <span class="complexity-info" id="complexityInfo"></span>
                     </div>
                     <div class="pagination">
-                        <button id="prevBtn" class="btn btn-icon">
+                        <button id="firstBtn" class="btn btn-icon" disabled>
+                            <i class="fas fa-fast-backward"></i>
+                        </button>
+                        <button id="prevBtn" class="btn btn-icon" disabled>
                             <i class="fas fa-chevron-left"></i>
                         </button>
-                        <span id="pageInfo">Halaman 1</span>
-                        <button id="nextBtn" class="btn btn-icon">
+                        <span id="pageInfo">Halaman 1 dari 1</span>
+                        <button id="nextBtn" class="btn btn-icon" disabled>
                             <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button id="lastBtn" class="btn btn-icon" disabled>
+                            <i class="fas fa-fast-forward"></i>
                         </button>
                     </div>
                 </div>
@@ -252,6 +359,66 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Algorithm Visualizer -->
+            <section class="algorithm-visualizer card">
+                <div class="section-header">
+                    <h2><i class="fas fa-project-diagram"></i> Algorithm Visualization</h2>
+                    <div class="visualizer-controls">
+                        <div class="speed-control">
+                            <label for="speedSlider">Kecepatan:</label>
+                            <input type="range" id="speedSlider" min="10" max="500" value="100">
+                            <span id="speedValue">Normal</span>
+                        </div>
+                        <button id="resetVisualization" class="btn btn-sm btn-outline">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                        <!-- TOMBOL VISUALISASI BARU YANG DITAMBAHKAN -->
+                        <button id="startVisualization" class="btn btn-primary">
+                            <i class="fas fa-play"></i> Mulai Visualisasi
+                        </button>
+                        <button id="pauseVisualization" class="btn btn-warning" style="display: none;">
+                            <i class="fas fa-pause"></i> Jeda
+                        </button>
+                    </div>
+                </div>
+                <div id="visualizationArea">
+                    <div class="visualization-header">
+                        <h4 id="visualizationTitle">Visualisasi Sorting</h4>
+                        <div class="visualization-stats">
+                            <span id="currentOperation">Operasi: -</span>
+                            <span id="comparisonCount">Perbandingan: 0</span>
+                            <span id="swapCount">Pertukaran: 0</span>
+                        </div>
+                    </div>
+                    <div class="bars-container" id="sortBars">
+                        <!-- Bars akan dibuat dinamis -->
+                    </div>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: var(--primary-color);"></span>
+                            <span>Data Normal</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #f72585;"></span>
+                            <span>Sedang Dibandingkan</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #4cc9f0;"></span>
+                            <span>Sedang Ditukar</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #2ec4b6;"></span>
+                            <span>Sudah Terurut</span>
+                        </div>
+                    </div>
+                    <div class="search-visualization" id="searchVisualization" style="display: none;">
+                        <div class="search-steps" id="searchSteps">
+                            <!-- Langkah-langkah pencarian akan ditampilkan di sini -->
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <!-- Footer -->
@@ -263,6 +430,8 @@
                 <span class="tech">JavaScript ES6+</span>
                 <span class="tech">OOP</span>
                 <span class="tech">Algoritma</span>
+                <span class="tech">File I/O</span>
+                <span class="tech">LocalStorage</span>
             </p>
         </footer>
     </div>
@@ -283,14 +452,56 @@
         </div>
     </div>
 
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-question-circle"></i> Panduan Penggunaan</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="help-content">
+                    <h4>Cara Menggunakan Sistem:</h4>
+                    <ol>
+                        <li><strong>Tambah Data:</strong> Isi form dan klik "Simpan Data"</li>
+                        <li><strong>Edit Data:</strong> Klik tombol Edit di tabel, lalu klik "Update Data"</li>
+                        <li><strong>Hapus Data:</strong> Klik tombol Hapus di tabel</li>
+                        <li><strong>Pencarian:</strong> Ketik di kotak pencarian dan pilih algoritma</li>
+                        <li><strong>Pengurutan:</strong> Pilih field dan algoritma, lalu klik tombol sort</li>
+                        <li><strong>Visualisasi:</strong> Klik tombol play untuk melihat visualisasi algoritma</li>
+                        <li><strong>Import/Export:</strong> Gunakan dropdown Import/Export untuk berbagai format</li>
+                    </ol>
+                    
+                    <h4>Tips:</h4>
+                    <ul>
+                        <li>Data otomatis disimpan ke browser (LocalStorage)</li>
+                        <li>Gunakan Binary Search hanya untuk NIM yang sudah terurut</li>
+                        <li>Klik tombol bulan/matahari untuk mode gelap/terang</li>
+                        <li>Data sampel otomatis dimuat jika belum ada data</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="helpCloseBtn" class="btn btn-primary">Tutup</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="spinner">
             <div class="spinner-circle"></div>
-            <p>Memproses data...</p>
+            <p id="loadingMessage">Memproses data...</p>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <!-- Load SheetJS for Excel support -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    
+    <!-- JavaScript File -->
+    <script src="script.js"></script>
 </body>
 </html>
